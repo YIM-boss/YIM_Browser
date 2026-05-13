@@ -69,7 +69,24 @@ export function activate(context: vscode.ExtensionContext) {
     });
   });
 
-  context.subscriptions.push(setFolderCmd, openBrowserCmd);
+  // ─── Command: Download URL directly to configured folder ─────────────────
+  // Intended for agent use: call via vscode.commands.executeCommand('yimBrowser.downloadUrl', url, filename)
+  const downloadUrlCmd = vscode.commands.registerCommand('yimBrowser.downloadUrl', async (url: string, filename: string) => {
+    if (!url || !filename) {
+      vscode.window.showErrorMessage('YIM Browser: downloadUrl requires both a URL and a filename.');
+      return;
+    }
+    const folder = context.globalState.get<string>(STORAGE_KEY) ?? DEFAULT_DOWNLOAD_PATH;
+    const dest = path.join(folder, filename);
+    try {
+      await downloadFile(url, dest);
+      vscode.window.showInformationMessage(`Downloaded: ${filename} -> ${folder}`);
+    } catch (err) {
+      vscode.window.showErrorMessage(`YIM Browser download failed: ${err}`);
+    }
+  });
+
+  context.subscriptions.push(setFolderCmd, openBrowserCmd, downloadUrlCmd);
 
   vscode.window.showInformationMessage('YIM Browser extension activated. Use "YIM Browser: Open Browser" to start.');
 }
