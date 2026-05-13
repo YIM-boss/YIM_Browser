@@ -1,0 +1,37 @@
+{
+  "name": "yim-browser",
+  "displayName": "YIM Browser",
+  "description": "Routes VS Code integrated browser downloads to a custom folder with persistent path memory.",
+  "version": "0.1.0",
+  "publisher": "YIM-boss",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": ["Other"],
+  "activationEvents": ["onCommand:yimBrowser.setDownloadFolder", "onCommand:yimBrowser.openBrowser"],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "yimBrowser.setDownloadFolder",
+        "title": "YIM Browser: Set Download Folder"
+      },
+      {
+        "command": "yimBrowser.openBrowser",
+        "title": "YIM Browser: Open Browser"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.85.0",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.3.0",
+    "@vscode/vsce": "^2.22.0"
+  }
+}
